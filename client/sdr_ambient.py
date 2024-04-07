@@ -21,17 +21,18 @@
 import subprocess
 import json
 
-
 fieldmap = {
     # sensor_field    returned_field
     "temperature_C":  "temperature",
     "humidity" : 'humidity',
     "wind_dir_deg" : 'wind_direction',
     "wind_speed_ms" : 'average_wind',
+    "wind_avg_m_s" : 'average_wind2', 
+    "wind_max_m_s" : 'max_wind',
     "gust_speed_ms" : 'gust_speed',
-    # "rainfall_mm" :
+     "rainfall_mm" : 'rainfall_mm',
     "uv" : 'uv',
-    # "uvi" :
+     "uvi" : 'uvi',
     "light_lux" : 'solar_radiation',
 }
 
@@ -40,7 +41,7 @@ class sdr_ambient:
     def __init__(self):
         # universal_newlines=True is needed for readline() in realtime.
         # It also apparently converts the output from bytes into strings.
-        self.proc = subprocess.Popen(['rtl_433', '-f', '915M',
+        self.proc = subprocess.Popen(['rtl_433', '-d1', '-Y', 'autolevel', '-Y', 'minmax', '-Y', 'magest', '-M', 'level', '-M', 'noise', 
                                       # '-s', '2400000',
                                       '-F', 'json'],
                                      universal_newlines=True,
